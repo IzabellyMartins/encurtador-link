@@ -1,7 +1,6 @@
 # 🔗 **Encurtador de Links** 🚀
 
-Bem-vindo ao **Encurtador de Links**, uma API RESTFUL criada com Java + Spring Boot que transforma URLs gigantescas em links compactos e fáceis de compartilhar! O front-end
-construído com HTML, CSS e JavaScript.
+Este projeto consiste em uma API RESTFUL desenvolvida em Java com Spring Boot para encurtar URLs, seguindo o padrão MVC. O front-end foi desenvolvido separadamente utilizando HTML, CSS e JavaScript, e consome a API para fornecer uma interface amigável ao usuário.
 
 ![ImagemLIGHT](https://i.imgur.com/kjJzJ92.png)
 

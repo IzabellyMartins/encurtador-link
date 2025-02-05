@@ -1,28 +1,30 @@
 # Etapa de build
-FROM maven:3.9.6-eclipse-temurin-21 AS build
+FROM ubuntu:latest AS build
 
-# Define o diretório de trabalho
-WORKDIR /app
+# Instalar dependências necessárias
+RUN apt-get update && \
+    apt-get install -y openjdk-21-jdk maven && \
+    rm -rf /var/lib/apt/lists/*
 
-# Copia os arquivos do projeto para dentro do container
+# Copiar os arquivos do projeto
 COPY . .
 
-# Compila o projeto sem rodar testes
-RUN mvn clean package -DskipTests
+# Compilar o projeto
+RUN mvn clean install
 
-# Etapa de runtime (imagem menor e otimizada)
-FROM eclipse-temurin:21-jdk-jammy
+# Etapa de execução
+FROM openjdk:21-jdk-slim
 
-# Define o diretório de trabalho
+# Definir o diretório de trabalho
 WORKDIR /app
 
-# Expõe a porta 8080
+# Expor a porta 8080
 EXPOSE 8080
 
-# Copia o .jar gerado na etapa anterior
+# Copiar o JAR gerado para a imagem final
 COPY --from=build /app/target/*.jar app.jar
 
-# Comando para rodar a aplicação
+# Comando para rodar o aplicativo
 CMD ["java", "-jar", "app.jar"]
 
 

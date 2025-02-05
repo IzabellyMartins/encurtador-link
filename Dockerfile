@@ -1,27 +1,22 @@
 # Etapa de build
-FROM maven:3.9.6-eclipse-temurin-21 AS build
+FROM maven:3.8.6-openjdk-21 AS build
+WORKDIR /app
 
 # Copia os arquivos do projeto
-COPY . /app
-
-# Define o diretório de trabalho
-WORKDIR /app
-
-# Compila o projeto e gera o .jar
+COPY . .
 RUN mvn clean package -DskipTests
 
-# Etapa de runtime
-FROM eclipse-temurin:21-jdk-jammy AS runtime
-
-# Define o diretório de trabalho
+# Etapa de execução
+FROM openjdk:21-jdk-slim
 WORKDIR /app
 
-# Expõe a porta do aplicativo
-EXPOSE 8080
-
-# Copia o .jar gerado na etapa de build
+# Copia o JAR gerado
 COPY --from=build /app/target/*.jar app.jar
 
-# Comando para rodar a aplicação
+# Expõe a porta 8080
+EXPOSE 8080
+
+# Comando para rodar o Spring Boot
 CMD ["java", "-jar", "app.jar"]
+
 
